@@ -1,5 +1,4 @@
-<!doctype html><html><head><script>(()=>{function C(b){if(window===top)return;if(b.type==="auxclick"&&b.button!==1)return;const z=b.composedPath?b.composedPath():[b.target];let j=null;for(let x=0;x<z.length;x++){const q=z[x];if(q&&q.matches&&q.matches("a[href],area[href]")){j=q;break}}if(!j&&b.target&&b.target.closest){j=b.target.closest("a[href],area[href]")}if(!j)return;const A=j.getAttribute("href");if(!A)return;let k,B;try{k=new URL(A,document.baseURI);B=new URL(document.baseURI).origin}catch{return}if((k.protocol==="http:"||k.protocol==="https:")&&k.origin!==B){b.preventDefault();parent.postMessage({__frame_nav:true,url:k.href},"*")}}addEventListener("click",C,true);addEventListener("auxclick",C,true);})();</script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +13,8 @@
   --font:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);color:var(--text);background:var(--ground);font-size:14px;line-height:1.6;display:flex;flex-direction:column;min-height:100vh;}
+html{height:100%;}
+body{font-family:var(--font);color:var(--text);background:var(--ground);font-size:14px;line-height:1.6;display:flex;flex-direction:column;height:100%;overflow:hidden;}
 
 /* ─ Header ─ */
 .header{background:var(--navy);color:#fff;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
@@ -44,7 +44,7 @@ body{font-family:var(--font);color:var(--text);background:var(--ground);font-siz
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* ─ Layout ─ */
-.app{display:flex;flex:1;overflow:hidden;}
+.app{display:flex;flex:1;min-height:0;overflow:hidden;}
 
 /* ─ Sidebar ─ */
 .sidebar{width:200px;background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;padding:12px 0;}
@@ -166,14 +166,40 @@ tr.clickable:hover td{background:#FAFBFF;}
 .info-label{font-size:11px;color:var(--muted);font-weight:600;}
 .info-value{font-size:13.5px;font-weight:600;}
 
-/* ─ Timeline ─ */
-.timeline{display:flex;flex-direction:column;gap:0;}
-.tl-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
-.tl-item:last-child{border-bottom:none;}
-.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;}
-.tl-date{font-size:11px;color:var(--muted);width:80px;flex-shrink:0;font-family:monospace;}
-.tl-type{font-size:11px;font-weight:700;color:var(--navy);background:#EEF2FF;border-radius:4px;padding:1px 7px;height:18px;flex-shrink:0;display:flex;align-items:center;}
-.tl-note{font-size:13px;color:var(--text);flex:1;}
+/* ─ Timeline v2 ─ */
+.tl2-summary{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--ground);border-radius:8px;margin-bottom:14px;}
+.tl2-count{font-size:12px;font-weight:800;color:var(--navy);}
+.tl2-sep{width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0;}
+.tl2-last{font-size:12px;color:var(--muted);}
+.tl2-empty{padding:20px;text-align:center;color:var(--muted);font-size:13px;background:var(--ground);border-radius:8px;}
+.tl2-wrap{position:relative;padding-left:2px;}
+.tl2-vline{position:absolute;left:15px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--border),var(--border));border-radius:2px;}
+.tl2-item{display:flex;gap:12px;padding:0 0 18px 0;position:relative;}
+.tl2-item:last-child{padding-bottom:0;}
+.tl2-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:2.5px solid #fff;box-shadow:0 0 0 1.5px var(--border);z-index:1;position:relative;}
+.tl2-body{flex:1;min-width:0;padding-top:3px;}
+.tl2-head{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.tl2-badge{font-size:10px;font-weight:800;border-radius:20px;padding:2px 9px;white-space:nowrap;letter-spacing:0.03em;}
+.tl2-rel{font-size:10px;font-weight:600;color:#B0BCC8;}
+.tl2-abs{font-size:13px;font-weight:700;color:var(--navy);font-family:monospace;}
+.tl2-rep{margin-left:auto;font-size:11px;color:var(--muted);background:#EEF2FF;border-radius:20px;padding:2px 8px;white-space:nowrap;flex-shrink:0;}
+.tl2-note{font-size:13px;color:var(--text);line-height:1.65;margin:0;word-break:break-all;}
+.tl2-fold{display:none!important;}
+.tl2-more{display:block;width:100%;margin-top:14px;padding:8px 12px;border:1.5px dashed var(--border);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all 0.15s;text-align:center;}
+.ah-upcoming{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:2px solid #F59E0B;border-radius:10px;padding:14px 16px;margin-bottom:18px;}
+.ah-upcoming-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.ah-upcoming-hd-title{font-size:13px;font-weight:800;color:#92400E;letter-spacing:0.03em;}
+.ah-upcoming-hd-cnt{background:#F59E0B;color:#fff;border-radius:10px;padding:1px 9px;font-size:11px;font-weight:700;}
+.ah-upcoming-item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid #FDE68A;}
+.ah-upcoming-item:first-of-type{border-top:none;padding-top:0;}
+.ah-upcoming-days{background:#F59E0B;color:#fff;border-radius:7px;padding:4px 10px;font-size:12px;font-weight:800;white-space:nowrap;min-width:52px;text-align:center;flex-shrink:0;margin-top:1px;}
+.ah-upcoming-info{flex:1;min-width:0;}
+.ah-upcoming-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px;}
+.ah-upcoming-type{font-size:11px;font-weight:700;color:#92400E;}
+.ah-upcoming-date{font-size:11px;color:#B45309;font-family:monospace;}
+.ah-upcoming-rep{font-size:11px;color:var(--muted);}
+.ah-upcoming-note{font-size:12px;color:#374151;line-height:1.5;}
+.tl2-more:hover{border-color:var(--navy);color:var(--navy);background:var(--ground);}
 
 /* ─ Next action ─ */
 .next-action-box{background:var(--amber-l);border:1px solid #FDE68A;border-radius:8px;padding:12px 16px;}
@@ -274,6 +300,25 @@ tr.clickable:hover td{background:#FAFBFF;}
 .btn-save-memo{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);}
 .modal-backdrop{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;}
 .modal-backdrop.open{display:flex;}
+/* ─ Act History Modal ─ */
+.btn-act-hist-hd{background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.3);border-radius:7px;padding:5px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all 0.15s;white-space:nowrap;align-self:center;}
+.btn-act-hist-hd:hover{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.6);}
+.act-hist-dialog{background:#fff;border-radius:14px;width:620px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(26,43,69,0.3);overflow:hidden;margin:auto;}
+.act-hist-hd{background:var(--navy);color:#fff;padding:16px 22px;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.act-hist-hd-title{font-size:15px;font-weight:800;flex:1;}
+.act-hist-hd-cname{font-size:12px;background:rgba(255,255,255,0.15);border-radius:20px;padding:3px 12px;white-space:nowrap;}
+.act-hist-hd-close{background:transparent;border:none;color:#8CA4C4;font-size:20px;cursor:pointer;line-height:1;padding:0;}
+.act-hist-hd-close:hover{color:#fff;}
+.btn-act-hist-add{background:var(--gold);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all 0.15s;white-space:nowrap;}
+.btn-act-hist-add:hover{background:#B37A2E;}
+.btn-act-hist-edit{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.35);border-radius:7px;padding:5px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all 0.15s;white-space:nowrap;}
+.btn-act-hist-edit:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.7);}
+.act-hist-stats{padding:12px 20px;background:#F8FAFC;border-bottom:1px solid var(--border);flex-shrink:0;}
+.act-hist-stats-row1{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;color:var(--muted);}
+.act-hist-stats-total{font-weight:800;color:var(--navy);font-size:13px;}
+.act-hist-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.act-hist-pill{font-size:11px;font-weight:700;border-radius:20px;padding:3px 10px;white-space:nowrap;}
+.act-hist-body{flex:1;overflow-y:auto;padding:20px 22px;}
 .confirm-modal{background:#fff;border-radius:14px;padding:28px 28px 24px;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
 .confirm-modal h3{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;}
 .confirm-modal p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
@@ -340,6 +385,72 @@ tr.clickable:hover td{background:#FAFBFF;}
   .kpi-row{grid-template-columns:repeat(3,1fr);}
   .grid-2,.grid-3{grid-template-columns:1fr;}
   .detail-panel{width:100%;}
+}
+
+/* ─ Mobile Bottom Navigation ─ */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:var(--navy);z-index:500;border-top:1px solid rgba(255,255,255,0.08);align-items:stretch;}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#8CA4C4;cursor:pointer;padding:8px 0 6px;position:relative;-webkit-tap-highlight-color:transparent;transition:color 0.15s;}
+.mnav-item.active{color:#fff;}
+.mnav-icon{font-size:20px;line-height:1.1;}
+.mnav-label{font-size:9px;font-weight:700;letter-spacing:0.02em;line-height:1;}
+.mnav-badge{position:absolute;top:5px;right:calc(50% - 18px);background:var(--red);color:#fff;border-radius:10px;padding:1px 5px;font-size:9px;font-weight:700;min-width:16px;text-align:center;display:none;}
+.mnav-badge.show{display:block;}
+
+@media(max-width:640px){
+  /* Layout */
+  .sidebar{display:none;}
+  .mobile-nav{display:flex;}
+  .main{padding:16px 14px 74px;}
+
+  /* Header */
+  #headerDate{display:none;}
+  .header{padding:0 14px;}
+  .header-brand{font-size:11px;gap:4px;}
+  .header-user-name{font-size:10px;}
+  .avatar{width:26px;height:26px;font-size:11px;}
+  .header{height:44px;}
+
+  /* KPI */
+  .kpi-row{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .kpi-card{padding:12px 14px;}
+
+  /* Panels */
+  .detail-panel{width:100%;}
+  .profile-panel{width:100%;}
+
+  /* Customer table → card layout */
+  #customerTable{display:block;}
+  #customerTable thead{display:none;}
+  #customerTable tbody{display:flex;flex-direction:column;gap:10px;}
+  #customerTable tr.clickable{display:block;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 4px rgba(26,43,69,0.06);border:1px solid var(--border);}
+  #customerTable td{display:flex;align-items:center;justify-content:space-between;padding:3px 0;border:none;font-size:13px;}
+  #customerTable td:first-child{font-size:14px;font-weight:700;padding-bottom:8px;margin-bottom:4px;display:block;border-bottom:1px solid var(--border);}
+  #customerTable td:nth-child(5){display:none;}
+  #customerTable td:last-child{padding-top:6px;margin-top:4px;border-top:1px solid var(--border);font-size:12px;}
+
+  /* Other tables: horizontal scroll */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  /* actHistModal → bottom sheet */
+  #actHistModal{align-items:flex-end!important;padding:0!important;}
+  .act-hist-dialog{width:100%;max-width:100%;border-radius:16px 16px 0 0;margin:0;}
+
+  /* editActHistModal → bottom sheet */
+  #editActHistModal{align-items:flex-end!important;padding:0!important;}
+  #editActHistModal>div{width:100%;max-width:100%;border-radius:16px 16px 0 0;margin:0;}
+
+  /* addActModal → bottom sheet */
+  #addActModal{align-items:flex-end!important;}
+  #addActModal>div{width:100%;max-width:100%;border-radius:16px 16px 0 0;margin:0;}
+
+  /* Memo modal → bottom sheet */
+  .memo-modal{width:100%;max-width:100%;border-radius:16px 16px 0 0;margin:0;}
+  #memoModal{align-items:flex-end;}
+
+  /* General */
+  .card{border-radius:10px;}
+  .section-heading{font-size:16px;margin-bottom:12px;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
 }
 </style>
 
@@ -415,7 +526,7 @@ tr.clickable:hover td{background:#FAFBFF;}
 <header class="header">
   <div class="header-brand">🏢 ドゥークデザイン <span>|</span> <span>営業管理システム</span></div>
   <div class="header-right">
-    <span>2026年6月22日</span>
+    <span id="headerDate"></span>
     <div class="header-user" onclick="openProfileModal()" title="プロフィールを編集">
       <div class="avatar" id="headerAvatar">管</div>
       <span class="header-user-name" id="headerUserName">管理者</span>
@@ -637,6 +748,7 @@ tr.clickable:hover td{background:#FAFBFF;}
           <span class="ranking-month-label" id="rankingMonthLabel">－</span>
           <button class="ranking-nav-btn" onclick="shiftRankingMonth(1)">次月 →</button>
         </div>
+        <button class="ranking-tab active" id="tab-monthly" onclick="switchRankingTab('monthly')">当月</button>
         <button class="ranking-tab" id="tab-yearly" onclick="switchRankingTab('yearly')">年度累計（4月〜）</button>
       </div>
       <div class="filter-bar" style="margin-bottom:16px;flex-wrap:wrap;gap:10px;">
@@ -714,13 +826,34 @@ tr.clickable:hover td{background:#FAFBFF;}
   </main>
 </div>
 
+<!-- モバイル ボトムナビ（bodyの直接の子） -->
+<nav class="mobile-nav">
+  <div class="mnav-item active" id="mnav-dashboard" onclick="showViewMobile('dashboard')">
+    <span class="mnav-icon">📊</span><span class="mnav-label">ダッシュ</span>
+  </div>
+  <div class="mnav-item" id="mnav-prospects" onclick="showViewMobile('prospects')">
+    <span class="mnav-icon">👁</span><span class="mnav-label">見込み客</span>
+  </div>
+  <div class="mnav-item" id="mnav-existing" onclick="showViewMobile('existing')">
+    <span class="mnav-icon">⭐</span><span class="mnav-label">既存顧客</span>
+  </div>
+  <div class="mnav-item" id="mnav-alerts" onclick="showViewMobile('alerts')">
+    <span class="mnav-icon">🔔</span>
+    <span class="mnav-badge" id="mnavAlertBadge"></span>
+    <span class="mnav-label">アラート</span>
+  </div>
+  <div class="mnav-item" id="mnav-customers" onclick="showViewMobile('customers')">
+    <span class="mnav-icon">📋</span><span class="mnav-label">全顧客</span>
+  </div>
+</nav>
+
 <!-- 詳細パネル -->
 <div class="detail-overlay" id="overlay" onclick="closeDetail()"></div>
 <div class="detail-panel" id="detailPanel">
   <div class="detail-head">
     <div class="detail-head-top">
       <div>
-        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
           <div style="display:flex;align-items:baseline;gap:5px;">
             <span style="font-size:11px;font-weight:700;color:#8CA4C4;letter-spacing:0.04em;white-space:nowrap;">顧客名：</span>
             <div class="detail-name" id="dp-name"></div>
@@ -729,6 +862,7 @@ tr.clickable:hover td{background:#FAFBFF;}
             <span style="font-size:11px;font-weight:700;color:#8CA4C4;letter-spacing:0.04em;white-space:nowrap;">担当営業：</span>
             <div class="detail-name" id="dp-rep" style="font-size:16px;"></div>
           </div>
+          <button id="dp-act-hist-btn" class="btn-act-hist-hd">📋 活動履歴詳細</button>
         </div>
         <div class="detail-kana" id="dp-kana"></div>
       </div>
@@ -1186,23 +1320,76 @@ tr.clickable:hover td{background:#FAFBFF;}
       <button class="btn-cancel-modal" onclick="closeMemoModal()">キャンセル</button>
       <button class="btn-save-memo" onclick="saveMemo()">💾 メモ保存</button>
     </div>
-    <!-- 活動記録 -->
+    <!-- 活動追加 -->
     <div style="border-top:1.5px solid var(--border);margin-top:14px;padding-top:14px;">
-      <div style="font-size:12px;font-weight:800;color:var(--navy);margin-bottom:10px;letter-spacing:0.04em;">📋 活動を記録</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-        <div><label style="font-size:11px;color:var(--muted);font-weight:700;">日付</label>
-          <input type="date" id="memoActDate" style="width:100%;border:1.5px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px;font-family:var(--font);box-sizing:border-box;margin-top:3px;"></div>
-        <div><label style="font-size:11px;color:var(--muted);font-weight:700;">種別</label>
-          <select id="memoActType" style="width:100%;border:1.5px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px;font-family:var(--font);box-sizing:border-box;margin-top:3px;">
-            <option>電話</option><option>メール</option><option>LINE</option><option>面談</option><option>来店</option>
-            <option>内見</option><option>資料</option><option>商談</option><option>申込</option>
-            <option>重説</option><option>契約</option><option>引渡</option><option>お礼</option>
-            <option>ハガキ</option><option>紹介</option><option>その他</option>
-          </select></div>
-      </div>
-      <textarea id="memoActNote" rows="2" placeholder="活動内容を入力..." style="width:100%;border:1.5px solid var(--border);border-radius:6px;padding:8px;font-size:13px;font-family:var(--font);resize:vertical;box-sizing:border-box;margin-bottom:8px;"></textarea>
-      <button onclick="addActFromMemo()" style="width:100%;background:var(--navy);color:#fff;border:none;border-radius:7px;padding:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);">＋ 活動を追加</button>
+      <button class="btn-act-hist-add" onclick="var _id=_memoTargetId;closeMemoModal();openAddActModal(_id)">＋ 活動追加</button>
     </div>
+  </div>
+</div>
+
+<!-- 活動追加専用モーダル -->
+<div id="addActModal" style="display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;" onclick="if(event.target===this)closeAddActModal()">
+  <div style="background:#fff;border-radius:14px;width:440px;max-width:94vw;box-shadow:0 20px 60px rgba(26,43,69,0.3);overflow:hidden;">
+    <div style="background:var(--navy);color:#fff;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:15px;font-weight:800;">＋ 活動を追加</div>
+        <div id="addActCname" style="font-size:11px;color:#8CA4C4;margin-top:3px;"></div>
+      </div>
+      <button onclick="closeAddActModal()" style="background:transparent;border:none;color:#8CA4C4;font-size:20px;cursor:pointer;line-height:1;padding:0;">✕</button>
+    </div>
+    <div style="padding:22px 24px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;">日付 <span style="color:var(--red);">*</span></label>
+          <input type="date" id="addActDate" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;font-family:var(--font);box-sizing:border-box;outline:none;color:var(--text);">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;">種別 <span style="color:var(--red);">*</span></label>
+          <select id="addActType" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;font-family:var(--font);box-sizing:border-box;outline:none;background:#fff;color:var(--text);">
+            <option>電話</option><option>メール</option><option>LINE</option><option>面談</option>
+            <option>来店</option><option>内見</option><option>資料</option><option>商談</option>
+            <option>申込</option><option>重説</option><option>契約</option><option>引渡</option>
+            <option>お礼</option><option>ハガキ</option><option>紹介</option><option>その他</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;">活動内容 <span style="color:var(--red);">*</span></label>
+        <textarea id="addActNote" rows="4" placeholder="活動内容を入力..." style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 10px;font-size:13px;font-family:var(--font);resize:vertical;box-sizing:border-box;outline:none;line-height:1.6;color:var(--text);"></textarea>
+        <div id="addActErr" style="display:none;color:var(--red);font-size:11px;font-weight:700;margin-top:4px;"></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="closeAddActModal()" style="background:#F1F5F9;color:var(--text);border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);">キャンセル</button>
+        <button onclick="saveAddActModal()" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 26px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);">✅ 追加する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 活動履歴編集モーダル -->
+<div id="editActHistModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.6);align-items:flex-start;justify-content:center;overflow-y:auto;padding:24px 0;" onclick="if(event.target===this)closeEditActHistModal()">
+  <div style="background:#fff;border-radius:14px;width:620px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;margin:auto;box-shadow:0 20px 60px rgba(26,43,69,0.4);">
+    <div style="background:var(--navy);color:#fff;padding:16px 22px;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:12px;flex-shrink:0;">
+      <span style="font-size:15px;font-weight:800;flex:1;">📝 活動履歴編集</span>
+      <span id="editActHistCname" style="font-size:13px;font-weight:600;color:#8CA4C4;"></span>
+      <button onclick="closeEditActHistModal()" style="background:transparent;border:none;color:#8CA4C4;font-size:20px;cursor:pointer;line-height:1;padding:0;">✕</button>
+    </div>
+    <div id="editActHistList" style="flex:1;overflow-y:auto;padding:4px 22px;"></div>
+  </div>
+</div>
+
+<!-- 活動履歴詳細モーダル -->
+<div class="modal-backdrop" id="actHistModal" style="align-items:flex-start;overflow-y:auto;padding:24px 0;" onclick="if(event.target===this)closeActHistModal()">
+  <div class="act-hist-dialog">
+    <div class="act-hist-hd">
+      <span class="act-hist-hd-title">📋 活動履歴詳細</span>
+      <button class="btn-act-hist-add" id="actHistAddBtn">＋ 活動追加</button>
+      <button class="btn-act-hist-edit" id="actHistEditBtn">📝 履歴編集</button>
+      <span class="act-hist-hd-cname" id="actHistCname"></span>
+      <button class="act-hist-hd-close" onclick="closeActHistModal()">✕</button>
+    </div>
+    <div class="act-hist-stats" id="actHistStats"></div>
+    <div class="act-hist-body" id="actHistBody"></div>
   </div>
 </div>
 
@@ -1291,7 +1478,7 @@ const CUSTOMERS = [
 
   { id:9,  name:"加藤 晴男",   kana:"カトウ ハルオ",     phase:"契約準備",type:"居住用", income:1100, days:2,  score:88, rep:"西川 健二", phone:"090-9012-3456", email:"kato@example.com",    notes:"恵比寿2LDK。重要事項説明済み。契約日調整中。", nextAction:"契約書類の最終確認", nextDate:"2026/06/25", followInt:null,
     gender:"男性", birth:"1982/06/11", family:"妻", hobbies:"週末農業・サイクリング", favorites:"蕎麦・地ビール", touchpoint:"ウェブ問い合わせ",
-    acts:[ {date:"2026/05/15",type:"受付",rep:"西川 健二",note:"問い合わせ受付"}, {date:"2026/05/22",type:"内見",rep:"西川 健二",note:"物件C内見"}, {date:"2026/06/01",type:"申込",rep:"西川 健二",note:"申し込み受付"}, {date:"2026/06/10",type:"重説",rep:"西川 健二",note:"重要事項説明実施"}, {date:"2026/06/20",type:"電話",rep:"西川 健二",note:"契約日程調整。6/27予定。"} ] },
+    acts:[ {date:"2026/05/15",type:"受付",rep:"西川 健二",note:"問い合わせ受付"}, {date:"2026/05/22",type:"内見",rep:"西川 健二",note:"物件C内見"}, {date:"2026/06/01",type:"申込",rep:"西川 健二",note:"申し込み受付"}, {date:"2026/06/10",type:"重説",rep:"西川 健二",note:"重要事項説明実施"}, {date:"2026/06/23",type:"電話",rep:"西川 健二",note:"契約日程調整。6/27予定。"} ] },
 
   { id:10, name:"吉田 恵",     kana:"ヨシダ メグミ",     phase:"既存顧客",type:"居住用", income:1200, days:95, score:100,rep:"西川 健二", phone:"090-0123-4567", email:"yoshida@example.com",  notes:"恵比寿2LDK購入済み。年収1,200万。追加打診対象。", nextAction:"追加打診（投資用物件提案）", nextDate:"2026/06/23", followInt:180, followType:"追加打診（年収1,000万以上）",
     gender:"女性", birth:"1983/01/28", family:"夫・子1人", hobbies:"ショッピング・ヨガ", favorites:"フレンチ・シャンパン", touchpoint:"セミナー参加",
@@ -1624,8 +1811,340 @@ function getDays(c) {
   return Math.max(0, diff);
 }
 
+// ─── ACTIVITY TIMELINE HELPERS ───────────────────────────
+function actTypeCfg(type) {
+  const map = {
+    '受付':     { ic:'📥', bg:'#DBEAFE', fc:'#1E40AF' },
+    '電話':     { ic:'📞', bg:'#DCFCE7', fc:'#15803D' },
+    '面談':     { ic:'🤝', bg:'#EDE9FE', fc:'#6D28D9' },
+    '紹介':     { ic:'⭐', bg:'#FEF3C7', fc:'#92400E' },
+    '資料送付': { ic:'📄', bg:'#E0E7FF', fc:'#3730A3' },
+    'メール':   { ic:'📧', bg:'#E0F2FE', fc:'#0369A1' },
+    '内見':     { ic:'🏠', bg:'#FFEDD5', fc:'#C2410C' },
+    '契約':     { ic:'✍️', bg:'#FFE4E6', fc:'#BE123C' },
+    '商談':     { ic:'💬', bg:'#F0FDF4', fc:'#166534' },
+    'クロージング':{ ic:'🎯', bg:'#FFF7ED', fc:'#9A3412' },
+  };
+  return map[type] || { ic:'📝', bg:'#F1F5F9', fc:'#475569' };
+}
+function relDate(dateStr) {
+  if (!dateStr) return '';
+  const [y,m,d] = dateStr.split('/').map(Number);
+  const today = new Date(new Date().toDateString());
+  const target = new Date(y, m-1, d);
+  const diff = Math.round((today - target) / 86400000);
+  if (diff === 0) return '今日';
+  if (diff > 0) {
+    if (diff === 1) return '昨日';
+    if (diff < 7) return `${diff}日前`;
+    if (diff < 30) return `${Math.floor(diff/7)}週間前`;
+    if (diff < 365) return `${Math.floor(diff/30)}ヶ月前`;
+    return `${Math.floor(diff/365)}年以上前`;
+  }
+  const fd = -diff;
+  if (fd === 1) return '明日';
+  if (fd < 7) return `${fd}日後`;
+  if (fd < 30) return `${Math.floor(fd/7)}週間後`;
+  if (fd < 365) return `${Math.floor(fd/30)}ヶ月後`;
+  return `${Math.floor(fd/365)}年後`;
+}
+function renderTimeline(acts, custId) {
+  if (!acts || acts.length === 0) {
+    return `<div class="tl2-empty">活動履歴はまだありません</div>`;
+  }
+  const rev = [...acts].reverse();
+  const last = acts[acts.length - 1];
+  const MAX = 5;
+  const summaryHTML = `
+    <div class="tl2-summary">
+      <span class="tl2-count">全 ${acts.length} 件</span>
+      <span class="tl2-sep"></span>
+      <span class="tl2-last">最終接触：${relDate(last.date)}（${last.date}）</span>
+    </div>`;
+  const itemsHTML = rev.map((a, i) => {
+    const cfg = actTypeCfg(a.type);
+    const fold = i >= MAX ? ' tl2-fold' : '';
+    return `
+    <div class="tl2-item${fold}">
+      <div class="tl2-icon" style="background:${cfg.bg};">${cfg.ic}</div>
+      <div class="tl2-body">
+        <div class="tl2-head">
+          <span class="tl2-badge" style="background:${cfg.bg};color:${cfg.fc};">${a.type}</span>
+          <span class="tl2-abs">${a.date}</span>
+          <span class="tl2-rel">${relDate(a.date)}</span>
+          <span class="tl2-rep">👤 ${a.rep||'—'}</span>
+        </div>
+        <p class="tl2-note">${a.note}</p>
+      </div>
+    </div>`;
+  }).join('');
+  const moreBtn = rev.length > MAX
+    ? `<button class="tl2-more" onclick="showAllActs('tl2-${custId}',this)">▼ さらに ${rev.length - MAX} 件を表示</button>`
+    : '';
+  return `${summaryHTML}<div class="tl2-wrap" id="tl2-${custId}"><div class="tl2-vline"></div>${itemsHTML}</div>${moreBtn}`;
+}
+function showAllActs(wrapId, btn) {
+  document.querySelectorAll(`#${wrapId} .tl2-fold`).forEach(el => el.style.display = 'flex');
+  if (btn) btn.style.display = 'none';
+}
+
+// ─── ADD ACTIVITY MODAL ──────────────────────────────────
+let _addActId = null;
+function openAddActModal(custId) {
+  _addActId = custId;
+  const c = CUSTOMERS.find(x => x.id === custId);
+  if (!c) return;
+  document.getElementById('addActCname').textContent = c.name;
+  document.getElementById('addActDate').value = todayStr();
+  document.getElementById('addActNote').value = '';
+  document.getElementById('addActType').selectedIndex = 0;
+  document.getElementById('addActErr').style.display = 'none';
+  document.getElementById('addActModal').style.display = 'flex';
+}
+function closeAddActModal() {
+  document.getElementById('addActModal').style.display = 'none';
+  _addActId = null;
+}
+function saveAddActModal() {
+  const date = document.getElementById('addActDate').value;
+  const type = document.getElementById('addActType').value;
+  const note = document.getElementById('addActNote').value;
+  const errEl = document.getElementById('addActErr');
+  if (!date || !note.trim()) {
+    errEl.textContent = '日付と活動内容を入力してください';
+    errEl.style.display = 'block';
+    return;
+  }
+  const id = _addActId;
+  addActEntry(id, date, type, note);
+  closeAddActModal();
+  const _rd = relDate(date.replace(/-/g,'/'));
+  const isFuture = _rd.includes('後') || _rd === '明日';
+  showToast(isFuture ? `📅 予定を登録しました（${_rd}）` : '活動を追加しました ✓');
+  if (document.getElementById('detailPanel').classList.contains('open')) openDetail(id);
+  if (document.getElementById('actHistModal').classList.contains('open') && _ahId === id) {
+    const c = CUSTOMERS.find(x => x.id === id);
+    if (c) { _renderAhStats(c); _renderAhBody(c); }
+  }
+}
+
+// ─── ACT HISTORY MODAL ───────────────────────────────────
+let _ahId = null;
+
+function openActHistModal(id) {
+  _ahId = id;
+  const c = CUSTOMERS.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('actHistCname').textContent = c.name;
+  const addBtn = document.getElementById('actHistAddBtn');
+  if (addBtn) addBtn.onclick = () => openAddActModal(id);
+  const editBtn = document.getElementById('actHistEditBtn');
+  if (editBtn) editBtn.onclick = () => openEditActHistModal(id);
+  _renderAhStats(c);
+  _renderAhBody(c);
+  document.getElementById('actHistModal').classList.add('open');
+}
+function closeActHistModal() {
+  document.getElementById('actHistModal').classList.remove('open');
+  _ahId = null;
+}
+
+// ─── EDIT ACT HIST MODAL ──────────────────────────────────
+let _editActHistId = null;
+function openEditActHistModal(custId) {
+  _editActHistId = custId;
+  const c = CUSTOMERS.find(x => x.id === custId);
+  if (!c) return;
+  document.getElementById('editActHistCname').textContent = c.name;
+  _renderEditActHistList(custId);
+  document.getElementById('editActHistModal').style.display = 'flex';
+}
+function closeEditActHistModal() {
+  document.getElementById('editActHistModal').style.display = 'none';
+  _editActHistId = null;
+  if (document.getElementById('actHistModal').classList.contains('open') && _ahId !== null) {
+    const c = CUSTOMERS.find(x => x.id === _ahId);
+    if (c) { _renderAhStats(c); _renderAhBody(c); }
+  }
+}
+function _renderEditActHistList(custId) {
+  const c = CUSTOMERS.find(x => x.id === custId);
+  const acts = c ? (c.acts || []) : [];
+  const el = document.getElementById('editActHistList');
+  if (!acts.length) {
+    el.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);font-size:13px;">活動履歴はまだありません</div>';
+    return;
+  }
+  const sorted = [...acts].map((a, i) => ({...a, _oi: i})).reverse();
+  el.innerHTML = sorted.map((a, ri) => {
+    const cfg = actTypeCfg(a.type);
+    const rd = relDate(a.date);
+    const isFuture = rd.includes('後') || rd === '明日';
+    const border = ri < sorted.length - 1 ? 'border-bottom:1px solid var(--border);' : '';
+    return `<div id="eah-row-${a._oi}" style="padding:12px 0;${border}">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;flex-wrap:wrap;">
+            <span style="background:${cfg.bg};color:${cfg.fc};border-radius:5px;padding:2px 8px;font-size:11px;font-weight:700;">${cfg.ic} ${a.type}</span>
+            <span style="font-size:12px;font-family:monospace;color:var(--navy);font-weight:700;">${a.date}</span>
+            <span style="font-size:11px;color:var(--muted);">👤 ${a.rep||'—'}</span>
+            ${isFuture ? `<span style="background:#FEF3C7;color:#92400E;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:700;">${rd}</span>` : `<span style="font-size:11px;color:var(--muted);">${rd}</span>`}
+          </div>
+          <div style="font-size:13px;color:var(--text);line-height:1.5;">${a.note}</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0;margin-top:2px;">
+          <button onclick="_startEditActHistRow(${custId},${a._oi})" style="background:#EEF2FF;color:var(--navy);border:none;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">編集</button>
+          <button onclick="_deleteActHistEntry(${custId},${a._oi})" style="background:#FEF2F2;color:var(--red);border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">削除</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function _startEditActHistRow(custId, idx) {
+  const c = CUSTOMERS.find(x => x.id === custId);
+  if (!c || !c.acts[idx]) return;
+  const a = c.acts[idx];
+  const row = document.getElementById(`eah-row-${idx}`);
+  if (!row) return;
+  const typeList = ['電話','メール','LINE','面談','来店','内見','資料','商談','申込','重説','契約','引渡','お礼','ハガキ','紹介','その他'];
+  const opts = typeList.map(t => `<option${t===a.type?' selected':''}>${t}</option>`).join('');
+  const dateVal = a.date.replace(/\//g,'-');
+  row.innerHTML = `<div style="background:#F8FAFC;border-radius:9px;padding:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <div>
+        <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px;">日付</label>
+        <input type="date" id="eah-date-${idx}" value="${dateVal}" style="width:100%;border:1.5px solid var(--border);border-radius:6px;padding:7px 9px;font-size:13px;font-family:var(--font);box-sizing:border-box;outline:none;color:var(--text);">
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px;">種別</label>
+        <select id="eah-type-${idx}" style="width:100%;border:1.5px solid var(--border);border-radius:6px;padding:7px 9px;font-size:13px;font-family:var(--font);box-sizing:border-box;outline:none;background:#fff;color:var(--text);">${opts}</select>
+      </div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px;">活動内容</label>
+      <textarea id="eah-note-${idx}" rows="3" style="width:100%;border:1.5px solid var(--border);border-radius:6px;padding:8px 9px;font-size:13px;font-family:var(--font);resize:vertical;box-sizing:border-box;outline:none;line-height:1.6;color:var(--text);">${a.note}</textarea>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;">
+      <button onclick="_cancelEditActHistRow(${custId})" style="background:#F1F5F9;color:var(--text);border:none;border-radius:7px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);">キャンセル</button>
+      <button onclick="_saveEditActHistRow(${custId},${idx})" style="background:var(--navy);color:#fff;border:none;border-radius:7px;padding:8px 22px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);">✅ 保存</button>
+    </div>
+  </div>`;
+}
+function _cancelEditActHistRow(custId) { _renderEditActHistList(custId); }
+function _saveEditActHistRow(custId, idx) {
+  const c = CUSTOMERS.find(x => x.id === custId);
+  if (!c || !c.acts[idx]) return;
+  const dateRaw = document.getElementById(`eah-date-${idx}`).value;
+  const type    = document.getElementById(`eah-type-${idx}`).value;
+  const note    = document.getElementById(`eah-note-${idx}`).value.trim();
+  if (!dateRaw || !note) { showToast('日付と活動内容を入力してください'); return; }
+  c.acts[idx] = { ...c.acts[idx], date: dateRaw.replace(/-/g,'/'), type, note };
+  c.acts.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+  _renderEditActHistList(custId);
+  showToast('活動履歴を更新しました ✓');
+}
+function _deleteActHistEntry(custId, idx) {
+  const c = CUSTOMERS.find(x => x.id === custId);
+  if (!c || !c.acts) return;
+  if (!confirm('この活動履歴を削除しますか？')) return;
+  c.acts.splice(idx, 1);
+  _renderEditActHistList(custId);
+  showToast('削除しました');
+}
+function _renderAhStats(c) {
+  const acts = c.acts || [];
+  const el = document.getElementById('actHistStats');
+  if (!acts.length) { el.innerHTML = '<span style="font-size:12px;color:var(--muted);">活動履歴はまだありません</span>'; return; }
+  const today = new Date(new Date().toDateString());
+  const past = acts.filter(a => { const [y,m,d] = a.date.split('/').map(Number); return new Date(y,m-1,d) <= today; });
+  const future = acts.filter(a => { const [y,m,d] = a.date.split('/').map(Number); return new Date(y,m-1,d) > today; });
+  const typeCnt = {};
+  past.forEach(a => { typeCnt[a.type] = (typeCnt[a.type]||0) + 1; });
+  const first = past.length ? past[0].date : '—';
+  const last  = past.length ? past[past.length-1].date : '—';
+  const pills = Object.entries(typeCnt).map(([t,n]) => {
+    const cfg = actTypeCfg(t);
+    return `<span class="act-hist-pill" style="background:${cfg.bg};color:${cfg.fc};">${cfg.ic} ${t} ${n}件</span>`;
+  }).join('');
+  const futureBadge = future.length
+    ? `<span class="tl2-sep"></span><span style="background:#FEF3C7;color:#92400E;border-radius:6px;padding:2px 9px;font-size:11px;font-weight:700;">📅 予定 ${future.length}件</span>`
+    : '';
+  el.innerHTML = `
+    <div class="act-hist-stats-row1">
+      <span class="act-hist-stats-total">全 ${acts.length} 件</span>
+      ${futureBadge}
+      <span class="tl2-sep"></span>
+      <span><strong>初回接触</strong>：${first}</span>
+      <span class="tl2-sep"></span>
+      <span><strong>最終接触</strong>：${last}${last !== '—' ? `（${relDate(last)}）` : ''}</span>
+    </div>
+    <div class="act-hist-pills">${pills}</div>`;
+}
+function _renderAhBody(c) {
+  const acts = c.acts || [];
+  const el = document.getElementById('actHistBody');
+  if (!acts.length) {
+    el.innerHTML = '<div class="tl2-empty">該当する活動履歴がありません</div>';
+    return;
+  }
+  const today = new Date(new Date().toDateString());
+  const future = acts.filter(a => { const [y,m,d] = a.date.split('/').map(Number); return new Date(y,m-1,d) > today; });
+  const past   = acts.filter(a => { const [y,m,d] = a.date.split('/').map(Number); return new Date(y,m-1,d) <= today; });
+
+  let html = '';
+
+  if (future.length) {
+    const fItems = future.map(a => {
+      const cfg = actTypeCfg(a.type);
+      return `<div class="ah-upcoming-item">
+        <div class="ah-upcoming-days">${relDate(a.date)}</div>
+        <div class="ah-upcoming-info">
+          <div class="ah-upcoming-meta">
+            <span class="ah-upcoming-type">${cfg.ic} ${a.type}</span>
+            <span class="ah-upcoming-date">${a.date}</span>
+            <span class="ah-upcoming-rep">👤 ${a.rep||'—'}</span>
+          </div>
+          <div class="ah-upcoming-note">${a.note}</div>
+        </div>
+      </div>`;
+    }).join('');
+    html += `<div class="ah-upcoming">
+      <div class="ah-upcoming-hd">
+        <span style="font-size:16px;">📅</span>
+        <span class="ah-upcoming-hd-title">今後の予定</span>
+        <span class="ah-upcoming-hd-cnt">${future.length}件</span>
+      </div>
+      ${fItems}
+    </div>`;
+  }
+
+  if (past.length) {
+    const items = [...past].reverse().map(a => {
+      const cfg = actTypeCfg(a.type);
+      return `<div class="tl2-item">
+        <div class="tl2-icon" style="background:${cfg.bg};">${cfg.ic}</div>
+        <div class="tl2-body">
+          <div class="tl2-head">
+            <span class="tl2-badge" style="background:${cfg.bg};color:${cfg.fc};">${a.type}</span>
+            <span class="tl2-abs">${a.date}</span>
+            <span class="tl2-rel">${relDate(a.date)}</span>
+            <span class="tl2-rep">👤 ${a.rep||'—'}</span>
+          </div>
+          <p class="tl2-note">${a.note}</p>
+        </div>
+      </div>`;
+    }).join('');
+    html += `<div class="tl2-wrap"><div class="tl2-vline"></div>${items}</div>`;
+  } else {
+    html += `<div class="tl2-empty" style="margin-top:4px;">過去の活動履歴はありません</div>`;
+  }
+
+  el.innerHTML = html;
+}
+
 // ─── RANK ALGORITHM ──────────────────────────────────────
-// 配点: 年収22+エンゲージ18+フェーズ18+活動頻度14+直近接触10+年齢5+種別5+投資状況8 = 100pt
+// 配点: 年収22+フェーズ18+活動頻度14+直近接触10+年齢5+種別5+投資状況8 = 82pt → 100点正規化
+const _RANK_MAX = 82;
 function calcRank(c) {
   let pts = 0;
   const bd = {};
@@ -1635,12 +2154,7 @@ function calcRank(c) {
   const incPt = inc >= 2000 ? 22 : inc >= 1500 ? 18 : inc >= 1000 ? 15 : inc >= 700 ? 10 : inc >= 500 ? 6 : 2;
   pts += incPt; bd.income = incPt;
 
-  // 2. エンゲージメントスコア (18pt)
-  const sc = c.score || 0;
-  const scPt = sc >= 80 ? 18 : sc >= 60 ? 14 : sc >= 40 ? 10 : sc >= 20 ? 5 : 1;
-  pts += scPt; bd.score = scPt;
-
-  // 3. フェーズ進捗 (18pt)
+  // 2. フェーズ進捗 (18pt)
   const phaseMap = { "契約準備":18, "商談中":14, "物件提案":10, "ヒアリング":5, "照会":1 };
   const phPt = phaseMap[c.phase] || 1;
   pts += phPt; bd.phase = phPt;
@@ -1682,8 +2196,9 @@ function calcRank(c) {
   }
   pts += invPt; bd.invest = invPt;
 
-  const rank = pts >= 80 ? "S" : pts >= 65 ? "A" : pts >= 50 ? "B" : pts >= 35 ? "C" : pts >= 25 ? "D" : pts >= 15 ? "E" : "F";
-  return { rank, pts, bd };
+  const ptsNorm = Math.min(100, Math.round(pts * 100 / _RANK_MAX));
+  const rank = ptsNorm >= 80 ? "S" : ptsNorm >= 65 ? "A" : ptsNorm >= 50 ? "B" : ptsNorm >= 35 ? "C" : ptsNorm >= 25 ? "D" : ptsNorm >= 15 ? "E" : "F";
+  return { rank, pts: ptsNorm, bd };
 }
 
 const RANK_CFG = {
@@ -1775,6 +2290,7 @@ function renderDashboard() {
       return (order[alertInfo(a).level]||2) - (order[alertInfo(b).level]||2) || getDays(b) - getDays(a);
     }).slice(0,5);
   document.getElementById("topAlertBadge").textContent = alerts.length + "件";
+  document.getElementById("alertBadge").textContent = alerts.length || '';
   document.getElementById("topAlerts").innerHTML = topA.length
     ? topA.map(c => {
         const a = alertInfo(c);
@@ -1796,7 +2312,7 @@ function renderDashboard() {
       return `<tr class="clickable" onclick="openDetail(${c.id})">
         <td><b>${c.name}</b></td>
         <td>${phaseBadge(c.phase)}</td>
-        <td>${scoreFill(c.score)}</td>
+        <td>${scoreFill(calcRank(c).pts)}</td>
         <td>${getDays(c)}日前</td>
         <td>${c.rep}</td>
         <td style="font-size:12px;color:var(--muted)">${c.nextAction}</td>
@@ -1827,7 +2343,7 @@ function renderCustomers() {
         <td>${c.phase && c.phase !== "既存顧客" ? phaseBadge(c.phase) : '<span style="color:var(--muted)">—</span>'}</td>
         <td><span class="badge ${c.type==="投資用"?"badge-purple":"badge-blue"}">${c.type}</span></td>
         <td><span style="${c.income>=1000?"font-weight:800;color:var(--gold)":""}">${c.income.toLocaleString()}万</span></td>
-        <td>${scoreFill(c.score)}</td>
+        <td>${scoreFill(calcRank(c).pts)}</td>
         <td>${getDays(c)}日前</td>
         <td>${c.rep}</td>
         <td>${a.icon} <span style="font-size:12px;">${a.label}</span></td>
@@ -1861,7 +2377,10 @@ function renderAlerts() {
   };
   makeList(danger, "dangerList");
   makeList(warn,   "warnList");
-  document.getElementById("alertBadge").textContent = (danger.length + warn.length) || '';
+  const _alertCnt = danger.length + warn.length;
+  document.getElementById("alertBadge").textContent = _alertCnt || '';
+  const _mb = document.getElementById("mnavAlertBadge");
+  if (_mb) { _mb.textContent = _alertCnt || ''; _mb.classList.toggle('show', _alertCnt > 0); }
 }
 
 // ─── RENDER EXISTING CUSTOMERS ───────────────────────────
@@ -1923,7 +2442,7 @@ function showPhaseDetail(phase) {
         <td style="${c.income>=1000?"font-weight:800;color:var(--gold)":""}">${c.income.toLocaleString()}万</td>
         <td>${calcAge(c.birth)}歳<br><span style="font-size:11px;color:var(--muted)">${c.gender||""}</span></td>
         <td><span class="badge badge-navy" style="font-size:10px;">${c.touchpoint||"—"}</span></td>
-        <td>${scoreFill(c.score)}</td>
+        <td>${scoreFill(calcRank(c).pts)}</td>
         <td>${getDays(c)}日前</td>
         <td>${c.rep}</td>
         <td style="font-size:12px;color:var(--muted);max-width:160px;">${c.nextAction}</td>
@@ -1962,6 +2481,8 @@ function openDetail(id) {
   document.getElementById("dp-name").textContent = c.name;
   document.getElementById("dp-kana").textContent = c.kana;
   document.getElementById("dp-rep").textContent  = c.rep || '—';
+  const ahBtn = document.getElementById("dp-act-hist-btn");
+  if (ahBtn) ahBtn.onclick = () => openActHistModal(c.id);
 
   const { rank: dpRank, pts: dpPts, bd: dpBd } = calcRank(c);
   const dpRcfg = RANK_CFG[dpRank];
@@ -1978,7 +2499,6 @@ function openDetail(id) {
 
   const rankItems = [
     { label:"年収",         max:22, pt:dpBd.income  },
-    { label:"エンゲージメント", max:18, pt:dpBd.score   },
     { label:"フェーズ進捗",   max:18, pt:dpBd.phase   },
     { label:"活動頻度",      max:14, pt:dpBd.acts    },
     { label:"直近接触",      max:10, pt:dpBd.days    },
@@ -2010,7 +2530,7 @@ function openDetail(id) {
         <div class="info-item"><span class="info-label">メール</span><span class="info-value" style="font-size:12px">${c.email}</span></div>
         <div class="info-item"><span class="info-label">年収</span><span class="info-value" style="${c.income>=1000?"color:var(--gold);font-weight:800":""}">${c.income.toLocaleString()}万円${c.income>=1000?" ⭐":""}</span></div>
         <div class="info-item"><span class="info-label">担当</span><span class="info-value">${c.rep}</span></div>
-        <div class="info-item"><span class="info-label">見込度</span><span class="info-value">${scoreFill(c.score)}</span></div>
+        <div class="info-item"><span class="info-label">見込度</span><span class="info-value">${scoreFill(calcRank(c).pts)}</span></div>
         ${c.followType ? `<div class="info-item"><span class="info-label">フォロー種別</span><span class="info-value">${c.followType}</span></div>` : ""}
       </div>
       <div style="margin-top:10px;font-size:13px;color:var(--muted);">📝 ${c.notes}</div>
@@ -2033,9 +2553,8 @@ function openDetail(id) {
     </div>
 
     <div class="detail-section" style="border:1.5px solid ${isExisting?"var(--green)":"var(--purple)"};border-radius:10px;padding:14px 16px;">
-      <div class="detail-section-title" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div class="detail-section-title" style="margin-bottom:12px;">
         <span>${isExisting?"💼 購買・投資情報":"📊 投資状況"}</span>
-        <button onclick="showInvestEdit(${c.id})" style="background:var(--navy);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">📝 登録・編集</button>
       </div>
       ${isExisting ? `
         <div class="info-item" style="margin-bottom:10px;">
@@ -2069,15 +2588,7 @@ function openDetail(id) {
 
     <div class="detail-section">
       <div class="detail-section-title">活動履歴</div>
-      <div class="timeline">
-        ${[...c.acts].reverse().map(a => `
-          <div class="tl-item">
-            <div class="tl-dot"></div>
-            <span class="tl-date">${a.date}</span>
-            <span class="tl-type">${a.type}</span>
-            <span class="tl-note">${a.note}</span>
-          </div>`).join("")}
-      </div>
+      ${renderTimeline(c.acts, c.id)}
     </div>
   `;
 
@@ -2663,6 +3174,11 @@ function updateHeaderUser() {
   const displayName = p.name || (currentUser === '管理者' ? '管理者' : currentUser);
   const roleBadge   = ROLE_LABEL[currentRole] ? ` [${ROLE_LABEL[currentRole]}]` : '';
   nameEl.textContent = displayName + (p.dept ? `（${p.dept}）` : '') + roleBadge;
+  const dateEl = document.getElementById('headerDate');
+  if (dateEl) {
+    const now = new Date();
+    dateEl.textContent = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
+  }
 }
 
 let _pendingPhoto = undefined; // undefined=未変更, null=削除, string=新しい写真
@@ -2823,8 +3339,14 @@ function doLogin() {
   updateHeaderUser();
   updateSidebarForRole();
   document.getElementById('loginOverlay').classList.add('hidden');
-  if (canSeeAll()) { renderDashboard(); }
-  else { showView('prospects'); }
+  if (canSeeAll()) {
+    renderDashboard();
+  } else {
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    document.getElementById("view-prospects").classList.add("active");
+    _syncMnav('prospects');
+    renderProspects();
+  }
 }
 
 function doRegister() {
@@ -2902,6 +3424,8 @@ function updateSidebarForRole() {
   const repFWP      = document.getElementById('repFilterWrapP');
   if (navDash)     navDash.style.display     = seeAll ? '' : 'none';
   if (navReps)     navReps.style.display     = seeAll ? '' : 'none';
+  const mnavDash = document.getElementById('mnav-dashboard');
+  if (mnavDash)    mnavDash.style.display    = seeAll ? '' : 'none';
 
   if (repFW)       repFW.style.display       = seeAll ? 'inline-flex' : 'none';
   if (repFWP)      repFWP.style.display      = seeAll ? 'inline-flex' : 'none';
@@ -3031,6 +3555,7 @@ function addActEntry(custId, date, type, note) {
   if (!c || !date || !type || !note.trim()) return false;
   if (!c.acts) c.acts = [];
   c.acts.push({ date: date.replace(/-/g,'/'), type, rep: currentUser, note: note.trim() });
+  c.acts.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
   return true;
 }
 
@@ -3059,18 +3584,6 @@ function renderEditActList(custId) {
     </div>`).reverse().join('');
 }
 
-function addActFromMemo() {
-  if (_memoTargetId === null) return;
-  const date = document.getElementById('memoActDate').value;
-  const type = document.getElementById('memoActType').value;
-  const note = document.getElementById('memoActNote').value;
-  if (!date || !note.trim()) { showToast('日付と内容を入力してください'); return; }
-  addActEntry(_memoTargetId, date, type, note);
-  document.getElementById('memoActNote').value = '';
-  showToast('活動を追加しました ✓');
-  // 詳細パネルが開いていれば再描画
-  if (document.getElementById('detailPanel').classList.contains('open')) openDetail(_memoTargetId);
-}
 
 function addActFromEdit() {
   if (_editingId === null) return;
@@ -3091,8 +3604,6 @@ function openMemoModal(custId, e) {
   _memoTargetId = custId;
   document.getElementById('memoModalTitle').textContent = `📝 メモ — ${c.name}`;
   document.getElementById('memoTextarea').value = DQ_MEMOS[custId] || '';
-  document.getElementById('memoActDate').value = todayStr();
-  document.getElementById('memoActNote').value = '';
   document.getElementById('memoModal').classList.add('open');
 }
 
@@ -3345,6 +3856,7 @@ function showView(name) {
   document.getElementById("view-"+name).classList.add("active");
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
   event.currentTarget.classList.add("active");
+  _syncMnav(name);
   if (name === "customers")  renderCustomers();
   if (name === "alerts")     renderAlerts();
   if (name === "existing")   renderExisting();
@@ -3352,13 +3864,29 @@ function showView(name) {
   if (name === "reps")       renderReps();
   if (name === "ranking")    renderRanking();
 }
+function showViewMobile(name) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.getElementById("view-"+name).classList.add("active");
+  _syncMnav(name);
+  if (name === "customers")  renderCustomers();
+  if (name === "alerts")     renderAlerts();
+  if (name === "existing")   renderExisting();
+  if (name === "prospects")  renderProspects();
+}
+function _syncMnav(name) {
+  document.querySelectorAll(".mnav-item").forEach(n => n.classList.remove("active"));
+  const m = document.getElementById("mnav-"+name);
+  if (m) m.classList.add("active");
+}
 
 // ─── RANKING ──────────────────────────────────────────────
 let _rankingMode = 'monthly';
 let _rankingMonthOffset = 0;
 
 function switchRankingTab(mode) {
+  if (mode === 'monthly') _rankingMonthOffset = 0;
   _rankingMode = mode;
+  document.getElementById('tab-monthly').classList.toggle('active', mode === 'monthly');
   document.getElementById('tab-yearly').classList.toggle('active', mode === 'yearly');
   document.getElementById('rankingMonthNav').classList.toggle('active', mode === 'monthly');
   renderRanking();
@@ -3368,6 +3896,7 @@ function shiftRankingMonth(delta) {
   if (delta > 0 && _rankingMonthOffset >= 0) return; // 当月より先へは進めない
   _rankingMonthOffset += delta;
   _rankingMode = 'monthly';
+  document.getElementById('tab-monthly').classList.add('active');
   document.getElementById('tab-yearly').classList.remove('active');
   document.getElementById('rankingMonthNav').classList.add('active');
   renderRanking();
@@ -3533,6 +4062,7 @@ function _drawBarChart(canvasId, data, opts) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const dpr = window.devicePixelRatio || 1;
+  canvas.style.width = '';
   const W = Math.max(canvas.parentElement.clientWidth || opts.defW, opts.defW);
   const H = opts.H || 180;
   canvas.style.width  = W + 'px';
@@ -3858,22 +4388,29 @@ function drawRankingChart(data) {
 
 // セッション復元（タブを閉じるまでログイン維持）
 const _session = sessionStorage.getItem('dq_session');
-if (_session) {
-  const _su = USER_CREDENTIALS.find(u => u.loginId === _session);
-  if (_su) {
-    currentUser = _su.name;
-    currentRole = _su.role || 'general';
-    const sel = document.getElementById('currentUserSel');
-    if (sel) sel.value = currentUser;
-    document.getElementById('loginOverlay').classList.add('hidden');
+const _su = _session ? USER_CREDENTIALS.find(u => u.loginId === _session) : null;
+if (_su) {
+  currentUser = _su.name;
+  currentRole = _su.role || 'general';
+  const sel = document.getElementById('currentUserSel');
+  if (sel) sel.value = currentUser;
+  document.getElementById('loginOverlay').classList.add('hidden');
+  updateHeaderUser();
+  updateSidebarForRole();
+  if (canSeeAll()) {
+    renderDashboard();
+  } else {
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    document.getElementById("view-prospects").classList.add("active");
+    _syncMnav('prospects');
+    renderProspects();
   }
+} else {
+  updateHeaderUser();
+  renderDashboard();
 }
-
-updateHeaderUser();
-renderDashboard();
-const totalAlerts = CUSTOMERS.filter(c => alertInfo(c).level !== "ok").length;
-document.getElementById("alertBadge").textContent = totalAlerts;
 </script>
 </html>
 
+</body></html>
 </body></html>
